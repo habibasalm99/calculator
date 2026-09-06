@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator - Fully Loaded Ads</title>
+    <!-- Monetag SDK Script -->
+    <script src='//libtl.com/sdk.js' data-zone='11740420' data-sdk='show_11740420'></script>
+    <style>
+        .calc-box{
+          max-width:360px;
+          margin:30px auto;
+          padding:20px;
+          border-radius:22px;
+          background:#111827;
+          box-shadow:0 20px 50px rgba(0,0,0,.35);
+          font-family:Arial,sans-serif;
+        }
+        .calc-title{
+          color:#fff;
+          text-align:center;
+          font-size:24px;
+          font-weight:700;
+          margin-bottom:15px;
+        }
+        .calc-display{
+          width:100%;
+          height:70px;
+          border:0;
+          outline:0;
+          border-radius:14px;
+          background:#050914;
+          color:#fff;
+          font-size:30px;
+          text-align:right;
+          padding:10px 15px;
+          margin-bottom:15px;
+          box-sizing:border-box;
+        }
+        .calc-buttons{
+          display:grid;
+          grid-template-columns:repeat(4,1fr);
+          gap:10px;
+        }
+        .calc-buttons button{
+          height:58px;
+          border:0;
+          border-radius:14px;
+          background:#1f2937;
+          color:#fff;
+          font-size:19px;
+          font-weight:700;
+          cursor:pointer;
+          transition:.15s;
+        }
+        .calc-buttons button:hover{
+          transform:translateY(-2px);
+          background:#374151;
+        }
+        .calc-buttons .op{
+          background:#2563eb;
+        }
+        .calc-buttons .clear{
+          background:#dc2626;
+        }
+        .calc-buttons .equal{
+          background:#16a34a;
+          grid-row:span 2;
+          height:126px;
+        }
+        .calc-buttons .zero{
+          grid-column:span 2;
+        }
+        .ad-triggers {
+          margin-top: 15px;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+        }
+        .ad-btn {
+          padding: 12px;
+          border: 0;
+          border-radius: 10px;
+          background: #dc2626;
+          color: #fff;
+          font-weight: 700;
+          cursor: pointer;
+        }
+        .ad-btn:hover {
+          background: #b91c1c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calc-box">
+  <div class="calc-title">Calculator - Fully Loaded Ads</div>
+
+  <input
+    class="calc-display"
+    id="bloggerCalcDisplay"
+    type="text"
+    value="0"
+    readonly
+  />
+
+  <div class="calc-buttons">
+    <button class="clear" onclick="bcClear()">AC</button>
+    <button onclick="bcDelete()">⌫</button>
+    <button class="op" onclick="bcPercent()">%</button>
+    <button class="op" onclick="bcOperator('/')">÷</button>
+
+    <button onclick="bcNumber('7')">7</button>
+    <button onclick="bcNumber('8')">8</button>
+    <button onclick="bcNumber('9')">9</button>
+    <button class="op" onclick="bcOperator('*')">×</button>
+
+    <button onclick="bcNumber('4')">4</button>
+    <button onclick="bcNumber('5')">5</button>
+    <button onclick="bcNumber('6')">6</button>
+    <button class="op" onclick="bcOperator('-')">−</button>
+
+    <button onclick="bcNumber('1')">1</button>
+    <button onclick="bcNumber('2')">2</button>
+    <button onclick="bcNumber('3')">3</button>
+    <button class="op" onclick="bcOperator('+')">+</button>
+
+    <button class="zero" onclick="bcNumber('0')">0</button>
+    <button onclick="bcDecimal()">.</button>
+    <button class="equal" onclick="bcEqual()">=</button>
+  </div>
+
+  <!-- Double Heavy Ad Trigger Buttons -->
+  <div class="ad-triggers">
+    <button class="ad-btn" onclick="fireDoubleAds('pop')">💥 Double Pop Ad</button>
+    <button class="ad-btn" onclick="fireDoubleAds('inter')">🔥 Double Interstitial</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var display = document.getElementById("bloggerCalcDisplay");
+  var current = "0";
+  var previous = null;
+  var operator = null;
+  var resetNext = false;
+
+  function update(){
+    display.value = current;
+  }
+
+  window.bcNumber = function(num){
+    if(current === "0" || resetNext){
+      current = num;
+      resetNext = false;
+    }else{
+      current += num;
+    }
+    update();
+  };
+
+  window.bcDecimal = function(){
+    if(resetNext){
+      current = "0";
+      resetNext = false;
+    }
+    if(current.indexOf(".") === -1){
+      current += ".";
+    }
+    update();
+  };
+
+  window.bcOperator = function(op){
+    if(operator && !resetNext){
+      calculate();
+    }
+    previous = parseFloat(current);
+    operator = op;
+    resetNext = true;
+  };
+
+  function calculate(){
+    if(previous === null || !operator) return;
+    var a = previous;
+    var b = parseFloat(current);
+    var result;
+
+    if(operator === "+") result = a + b;
+    if(operator === "-") result = a - b;
+    if(operator === "*") result = a * b;
+    if(operator === "/"){
+      if(b === 0){
+        current = "Error";
+        previous = null;
+        operator = null;
+        resetNext = true;
+        update();
+        return;
+      }
+      result = a / b;
+    }
+
+    current = String(Number.isInteger(result) ? result : parseFloat(result.toFixed(10)));
+    previous = null;
+    operator = null;
+  }
+
+  // Double Rewarded Interstitial on '=' click
+  window.bcEqual = function(){
+    calculate();
+    resetNext = true;
+    update();
+
+    if(typeof show_11740420 === 'function'){
+      // First Ad
+      show_11740420().then(() => {
+        alert('First Rewarded Ad Viewed!');
+      }).catch(e => console.log(e));
+
+      // Second Ad Trigger (Double execution)
+      setTimeout(function() {
+        show_11740420().then(() => {
+          alert('Second Rewarded Ad Viewed!');
+        }).catch(e => console.log(e));
+      }, 1000);
+    }
+  };
+
+  window.bcClear = function(){
+    current = "0";
+    previous = null;
+    operator = null;
+    resetNext = false;
+    update();
+  };
+
+  window.bcDelete = function(){
+    if(resetNext || current === "Error"){
+      bcClear();
+      return;
+    }
+    current = current.length > 1 ? current.slice(0,-1) : "0";
+    update();
+  };
+
+  window.bcPercent = function(){
+    var value = parseFloat(current);
+    if(!isNaN(value)){
+      current = String(value / 100);
+      update();
+    }
+  };
+})();
+
+// 1. Heavy Automatic In-App Interstitial Ads on Page Load (Double sequence)
+window.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        if(typeof show_11740420 === 'function'){
+            show_11740420({
+              type: 'inApp',
+              inAppSettings: {
+                frequency: 2,
+                capping: 0.1,
+                interval: 10,
+                timeout: 3,
+                everyPage: false
+              }
+            });
+        }
+    }, 1500);
+});
+
+// 2. Manual Double Ad Fire Function
+window.fireDoubleAds = function(type) {
+    if(typeof show_11740420 === 'function'){
+        if(type === 'pop') {
+            show_11740420('pop').then(() => {
+                alert('Popup Ad 1 Completed');
+            }).catch(e => {});
+            setTimeout(() => {
+                show_11740420('pop').then(() => {
+                    alert('Popup Ad 2 Completed');
+                }).catch(e => {});
+            }, 800);
+        } else {
+            show_11740420().then(() => {
+                alert('Interstitial Ad 1 Completed');
+            }).catch(e => {});
+            setTimeout(() => {
+                show_11740420().then(() => {
+                    alert('Interstitial Ad 2 Completed');
+                }).catch(e => {});
+            }, 800);
+        }
+    } else {
+        alert('SDK still loading...');
+    }
+};
+</script>
+
+</body>
+</html>
